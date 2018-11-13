@@ -9,7 +9,7 @@ public class LifecycleManager : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        Debug.Log("Starting");
+
         m_IsQuitting = false;
     }
 	

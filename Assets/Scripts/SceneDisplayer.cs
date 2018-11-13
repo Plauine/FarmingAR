@@ -7,7 +7,9 @@ using UnityEngine;
 public class SceneDisplayer : MonoBehaviour {
 
     [SerializeField] private Camera FirstPersonCamera;
-    [SerializeField] private GameObject FarmScene;
+    [SerializeField] private Transform FarmScene;
+
+    public static bool SceneIsDisplayed;
 
     // The position of the touch 
     private Vector3 _clickPos;
@@ -18,7 +20,7 @@ public class SceneDisplayer : MonoBehaviour {
     // Use this for initialization
     void Start () {
         DisplaySceneEvent.RegisterListener(OnEventFired);
-
+        SceneIsDisplayed = false;
     }
 
     void OnDisable()
@@ -30,7 +32,7 @@ public class SceneDisplayer : MonoBehaviour {
     private void OnEventFired(DisplaySceneEvent info)
     {
         _clickPos = info.PlaceOfClick;
-        Debug.Log("DisplayScene at: " + info.PlaceOfClick);
+
         // Look for a plane hitting the raycast from the touch point (TrackableHit, TrackableHitFlags, Frame.Raycast
         TrackableHit hit;
         TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
@@ -46,8 +48,9 @@ public class SceneDisplayer : MonoBehaviour {
             {
                 Debug.Log("Hit at back of the current DetectedPlane");
             }
-            else
+            else if(!SceneIsDisplayed)
             {
+                Debug.Log("DisplayScene at: " + info.PlaceOfClick);
                 // Instanciate the model at the hit pose
                 var farmObject = Instantiate(FarmScene, hit.Pose.position, hit.Pose.rotation);
 
@@ -59,6 +62,8 @@ public class SceneDisplayer : MonoBehaviour {
 
                 // Make the model a child of the anchor
                 farmObject.transform.parent = anchor.transform;
+
+                SceneIsDisplayed = true;
             }
         }
     }
