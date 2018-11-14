@@ -9,6 +9,7 @@ namespace FarmingVR.SceneInteractions
         // Update is called once per frame
         void Update()
         {
+            Debug.Log("Coucou");
             // Check if touchCount < 2 for rescale for example
             if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
             {
