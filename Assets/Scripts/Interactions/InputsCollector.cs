@@ -48,19 +48,13 @@ namespace FarmingVR.Interactions
                     var phase1 = Input.GetTouch(0).phase;
                     var phase2 = Input.GetTouch(1).phase;
 
-                    // If at least one of the two touch is ending
-                    if (phase1 == TouchPhase.Ended || phase2 == TouchPhase.Ended)
-                    {
-                        // Reset referenceDistance
-                        _refDistance = -1.0f;
-                    }
-                    else if (phase1 == TouchPhase.Began || phase2 == TouchPhase.Began) // Else if at least one is beginning 
-                    {
-                        // set referenceDistance in absolute values
-                        _refDistance = System.Math.Abs(Input.GetTouch(0).position.x - Input.GetTouch(1).position.x);
+                    Debug.Log("phase1 null" + phase1==null);
+                    Debug.Log("phase2 null" + phase2 == null);
 
-                    }
-                    else if (phase1 == TouchPhase.Moved || phase2 == TouchPhase.Moved) // Else if at least one of the touches is moving
+                    if ( // If none of the Touch is ending nor beginning and one of them is moving
+                        (phase1 != TouchPhase.Ended && phase2 != TouchPhase.Ended) && 
+                        (phase1 != TouchPhase.Began && phase2 != TouchPhase.Began) && 
+                        (phase1 == TouchPhase.Moved || phase2 == TouchPhase.Moved))
                     {
                         // Find the position in the previous frame of each touch.
                         var touchZeroPrevPos = Input.GetTouch(0).position - Input.GetTouch(0).deltaPosition;
@@ -71,7 +65,7 @@ namespace FarmingVR.Interactions
                         float touchDeltaMag = (Input.GetTouch(0).position - Input.GetTouch(1).position).magnitude;
 
                         // Create new event with the difference in the distances between each frame.
-                        new RescaleModelEvent(prevTouchDeltaMag - touchDeltaMag);
+                        new RescaleModelEvent((prevTouchDeltaMag - touchDeltaMag) * 0.05f);
                     }
                     break;
             }

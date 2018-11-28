@@ -1,4 +1,5 @@
 ﻿using FarmingVR.Event;
+using FarmingVR.Interactions;
 using GoogleARCore;
 using UnityEngine;
 
@@ -48,26 +49,30 @@ namespace FarmingVR.ScenePreparation
         /// <param name="info"></param>
         private void PrepareModelDisplay(DisplayModelEvent info)
         {
-            // Look for a plane hitting the raycast from the touch point (TrackableHit, TrackableHitFlags, Frame.Raycast
-            TrackableHit hit;
-            TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
-                TrackableHitFlags.FeaturePointWithSurfaceNormal;
-
-            if (Frame.Raycast(info.PlaceOfClick.x, info.PlaceOfClick.y, raycastFilter, out hit))
+            if (!SceneIsDisplayed)
             {
-                // Use hit pose and camera pose to check if hittest is from the
-                // back of the plane, if it is, no need to create the anchor.
-                if ((hit.Trackable is DetectedPlane) &&
-                     Vector3.Dot(_firstPersonCamera.transform.position - hit.Pose.position,
-                                 hit.Pose.rotation * Vector3.up) < 0)
+                // Look for a plane hitting the raycast from the touch point (TrackableHit, TrackableHitFlags, Frame.Raycast
+                TrackableHit hit;
+                TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
+                    TrackableHitFlags.FeaturePointWithSurfaceNormal;
+
+                if (Frame.Raycast(info.PlaceOfClick.x, info.PlaceOfClick.y, raycastFilter, out hit))
                 {
-                    Debug.Log("Hit at back of the current DetectedPlane");
-                }
-                else // If we hit an appropriate place
-                {
-                    DisplayModel(hit);
+                    // Use hit pose and camera pose to check if hittest is from the
+                    // back of the plane, if it is, no need to create the anchor.
+                    if ((hit.Trackable is DetectedPlane) &&
+                         Vector3.Dot(_firstPersonCamera.transform.position - hit.Pose.position,
+                                     hit.Pose.rotation * Vector3.up) < 0)
+                    {
+                        Debug.Log("Hit at back of the current DetectedPlane");
+                    }
+                    else // If we hit an appropriate place
+                    {
+                        DisplayModel(hit);
+                    }
                 }
             }
+            
         }
 
         /// <summary>
@@ -86,7 +91,11 @@ namespace FarmingVR.ScenePreparation
             // Make the model a child of the anchor
             farmObject.transform.parent = anchor.transform;
 
-            // TODO : Create new event when new anchor and object is placed on the scene
+            // Add Components Rescaler and Rotator
+            farmObject.gameObject.AddComponent<ModelRescaler>();
+            farmObject.gameObject.AddComponent<ModelRotator>();
+
+            // Create new event when new anchor and object are placed on the scene
             new ModelIsDisplayedEvent(farmObject);
 
             SceneIsDisplayed = true;

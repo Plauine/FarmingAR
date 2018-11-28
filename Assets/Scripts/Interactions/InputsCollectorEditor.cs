@@ -15,7 +15,7 @@ public class InputsCollectorEditor : MonoBehaviour {
         {
             if (Input.GetAxis("Vertical") != 0)
             {
-                new RescaleModelEvent(Input.GetAxis("Vertical") * 0.8f);
+                new RescaleModelEvent(-Input.GetAxis("Vertical") * 0.8f);
             }
             if (Input.GetAxis("Horizontal") != 0)
             {

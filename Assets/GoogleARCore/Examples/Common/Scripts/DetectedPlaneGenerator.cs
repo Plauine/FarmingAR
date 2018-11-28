@@ -69,33 +69,29 @@ namespace GoogleARCore.Examples.Common
 
         }
 
-
-        /// <summary>
-        /// This callback method is called once the model has been displayed
-        /// It hides all the detected plans and stops the Update method from detecting further plans
-        /// </summary>
-        /// <param name="info"></param>
-        private void HidePlans(ModelIsDisplayedEvent info)
-        {
-            _check = false;
-            foreach(Transform child in GameObject.Find("Plane Generator").transform)
-            {
-                child.gameObject.SetActive(false);
-            }
-        }
-
         /// <summary>
         /// Set and unset the listener
         /// </summary>
         private void Start()
         {
             _check = true;
-            ModelIsDisplayedEvent.RegisterListener(HidePlans);
+            ModelIsDisplayedEvent.RegisterListener(StopDetection);
         }
 
         private void OnDisable()
         {
-            ModelIsDisplayedEvent.UnregisterListener(HidePlans);
+            ModelIsDisplayedEvent.UnregisterListener(StopDetection);
+        }
+
+        /// <summary>
+        ///  This callback method is called once the model has been displayed
+        ///  Stops the Update method from detecting further plans
+        /// </summary>
+        /// <param name="info"></param>
+
+        private void StopDetection(ModelIsDisplayedEvent info)
+        {
+            _check = false;
         }
     }
 }

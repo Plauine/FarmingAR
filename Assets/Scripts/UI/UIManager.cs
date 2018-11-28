@@ -15,7 +15,8 @@ public class UIManager : MonoBehaviour {
 
     private Transform _model;
 
-    private Animator _animator;
+    private Animator _panelAnimator;
+    private Animator _buttonAnimator;
 
     private Text _textHolder;
 
@@ -34,7 +35,8 @@ public class UIManager : MonoBehaviour {
     private void Start()
     {
         ModelIsDisplayedEvent.RegisterListener(ShowButton);
-        _animator = _infoPanel.GetComponent<Animator>();
+        _panelAnimator = _infoPanel.GetComponent<Animator>();
+        _buttonAnimator = _button.GetComponent<Animator>();
         _textHolder = GameObject.Find("InfoDisplay").GetComponent<Text>();
     }
 
@@ -51,7 +53,8 @@ public class UIManager : MonoBehaviour {
 
     public void DisplayPanel()
     {
-        _button.SetActive(false);
-        _animator.SetTrigger("DisplayInfo");
+        _panelAnimator.SetTrigger("DisplayInfo");
+        _buttonAnimator.SetTrigger("HideButton"); ;
+
     }
 }

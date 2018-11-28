@@ -13,7 +13,11 @@ namespace FarmingVR.Interactions
         /// </summary>
         private Transform _modelTransform;
 
-        private float _zoomSpeed = 0.01f;
+        /// <summary>
+        /// The rescale speed
+        /// It depends on the model's size
+        /// </summary>
+        private float _rescaleSpeed;
         
         // Use this for initialization
         void Start ()
@@ -35,12 +39,16 @@ namespace FarmingVR.Interactions
         /// <param name="infoEvent">Information about the event especially the ratio of the rescaling</param>
         private void RescaleScene(RescaleModelEvent infoEvent)
         {
-            var futureScale = _modelTransform.localScale - new Vector3(infoEvent.Modificator * _zoomSpeed, infoEvent.Modificator * _zoomSpeed, infoEvent.Modificator * _zoomSpeed);
-            // If the future scale is not negative
-            if (futureScale.x > 0.1f && futureScale.y > 0.1f && futureScale.z > 0.1f)
+            if (infoEvent != null)
             {
-                // Apply the modificator to the local Scale
-                _modelTransform.localScale = futureScale;
+                Debug.Log("Modificator: " + infoEvent.Modificator);
+                var futureScale = _modelTransform.localScale - new Vector3(infoEvent.Modificator * _rescaleSpeed, infoEvent.Modificator * _rescaleSpeed, infoEvent.Modificator * _rescaleSpeed);
+                // If the future scale is not negative
+                if (futureScale.x > 0.1f && futureScale.y > 0.1f && futureScale.z > 0.1f)
+                {
+                    // Apply the modificator to the local Scale
+                    _modelTransform.localScale = futureScale;
+                }
             }
 
         }
@@ -52,6 +60,10 @@ namespace FarmingVR.Interactions
         private void RegisterModel(ModelIsDisplayedEvent infoEvent)
         {
             _modelTransform = infoEvent.FarmTransform;
+
+            // Find and register the biggest value of the model's size
+            var modelSize = _modelTransform.GetComponent<MeshRenderer>().bounds.size;
+            _rescaleSpeed = Mathf.Max(Mathf.Max(modelSize.x, modelSize.y), modelSize.z) / 100.0f;
         }
     }
 }
