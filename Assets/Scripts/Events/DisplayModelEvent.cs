@@ -3,11 +3,11 @@ using EventCallbacks;
 
 namespace FarmingVR.Event
 {
-    public class DisplaySceneEvent : Event<DisplaySceneEvent> {
+    public class DisplayModelEvent : Event<DisplayModelEvent> {
 
         public readonly Vector3 PlaceOfClick;
 
-        public DisplaySceneEvent(Vector3 placeOfClick) : base("This event triggers the display of the scene on a plan")
+        public DisplayModelEvent(Vector3 placeOfClick) : base("This event triggers the display of the scene on a plan")
         {
             this.PlaceOfClick = placeOfClick;
 

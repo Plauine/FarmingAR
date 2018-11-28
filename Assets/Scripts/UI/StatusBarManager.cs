@@ -11,22 +11,13 @@ namespace FarmingVR.UI
 
         [SerializeField] private GameObject _StatusBar;
 
-	    // Use this for initialization
-	    void Start () {
-		
-	    }
-	
 	    // Update is called once per frame
 	    void Update () {
 
-            // DisplayStatusBar indicated if we must display the status bar or not
-            bool DisplayStatusBar = false;
-            if (GetComponent<PlanDetector>().m_AllPlanes.Count == 0)
-            {
-                DisplayStatusBar = true;
-            }
+             // Set the display to true
+             var displayStatusBar = GetComponent<PlanDetector>().m_AllPlanes.Count == 0;
 
-            _StatusBar.SetActive(DisplayStatusBar);
+            _StatusBar.SetActive(displayStatusBar);
         }
     }
 }

@@ -20,7 +20,9 @@
 
 namespace GoogleARCore.Examples.Common
 {
+    using System;
     using System.Collections.Generic;
+    using FarmingVR.Event;
     using GoogleARCore;
     using UnityEngine;
 
@@ -41,26 +43,59 @@ namespace GoogleARCore.Examples.Common
         private List<DetectedPlane> m_NewPlanes = new List<DetectedPlane>();
 
         /// <summary>
+        /// Boolean which allows or not the Update method to look for new plans
+        /// </summary>
+        private bool _check;
+
+        /// <summary>
         /// The Unity Update method.
         /// </summary>
         public void Update()
         {
-            // Check that motion tracking is tracking.
-            if (Session.Status != SessionStatus.Tracking)
+            // If motion tracking is tracking and can check 
+            if (Session.Status == SessionStatus.Tracking && _check)
             {
-                return;
+                // Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
+                Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.New);
+                for (int i = 0; i < m_NewPlanes.Count; i++)
+                {
+                    // Instantiate a plane visualization prefab and set it to track the new plane. The transform is set to
+                    // the origin with an identity rotation since the mesh for our prefab is updated in Unity World
+                    // coordinates.
+                    GameObject planeObject = Instantiate(DetectedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
+                    planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
+                }
             }
 
-            // Iterate over planes found in this frame and instantiate corresponding GameObjects to visualize them.
-            Session.GetTrackables<DetectedPlane>(m_NewPlanes, TrackableQueryFilter.New);
-            for (int i = 0; i < m_NewPlanes.Count; i++)
+        }
+
+
+        /// <summary>
+        /// This callback method is called once the model has been displayed
+        /// It hides all the detected plans and stops the Update method from detecting further plans
+        /// </summary>
+        /// <param name="info"></param>
+        private void HidePlans(ModelIsDisplayedEvent info)
+        {
+            _check = false;
+            foreach(Transform child in GameObject.Find("Plane Generator").transform)
             {
-                // Instantiate a plane visualization prefab and set it to track the new plane. The transform is set to
-                // the origin with an identity rotation since the mesh for our prefab is updated in Unity World
-                // coordinates.
-                GameObject planeObject = Instantiate(DetectedPlanePrefab, Vector3.zero, Quaternion.identity, transform);
-                planeObject.GetComponent<DetectedPlaneVisualizer>().Initialize(m_NewPlanes[i]);
+                child.gameObject.SetActive(false);
             }
+        }
+
+        /// <summary>
+        /// Set and unset the listener
+        /// </summary>
+        private void Start()
+        {
+            _check = true;
+            ModelIsDisplayedEvent.RegisterListener(HidePlans);
+        }
+
+        private void OnDisable()
+        {
+            ModelIsDisplayedEvent.UnregisterListener(HidePlans);
         }
     }
 }
