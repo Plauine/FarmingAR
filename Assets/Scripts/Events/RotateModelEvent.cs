@@ -4,12 +4,11 @@ namespace FarmingVR.Event
 {
     public class RotateModelEvent : EventCallbacks.Event<RotateModelEvent>
     {
-        public Vector3 Rotation;
+        public readonly float RotationY;
 
         public RotateModelEvent(float rotationY) : base("This event triggers the rotation of the model")
         {
-            Rotation = new Vector3(0, rotationY, 0);
-
+            RotationY = rotationY;
             FireEvent(this);
         }
     }

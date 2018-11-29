@@ -3,7 +3,6 @@ using FarmingVR.Event;
 using FarmingVR.Interactions;
 using UnityEngine;
 
-#if UNITY_EDITOR
 public class InputsCollectorEditor : MonoBehaviour {
 	
 	// Update is called once per frame
@@ -34,16 +33,14 @@ public class InputsCollectorEditor : MonoBehaviour {
                     if (Input.GetAxis("Vertical") != 0)
                     {
                         var scaleModifier = -Input.GetAxis("Vertical") * 0.8f;
-                        Selector.CurrentlySelected.transform.localScale += new Vector3(scaleModifier, scaleModifier, scaleModifier);
+                        new RescaleModelEvent(scaleModifier);
                     }
                     if (Input.GetAxis("Horizontal") != 0)
                     {
-                        Selector.CurrentlySelected.transform.Rotate(new Vector3(0, Input.GetAxis("Horizontal"), 0));
+                        new RotateModelEvent(Input.GetAxis("Horizontal"));
                     }
                 }
             }
         }
     }
 }
-    
-#endif
