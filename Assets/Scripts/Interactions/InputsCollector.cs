@@ -1,5 +1,6 @@
 ﻿using FarmingVR.Event;
 using FarmingVR.ScenePreparation;
+using GoogleARCore;
 using UnityEngine;
 
 namespace FarmingVR.Interactions
@@ -16,7 +17,12 @@ namespace FarmingVR.Interactions
         /// </summary>
         private float _refDistance;
 
-        // private float _threshold = 0.2f;
+        /// <summary>
+        /// Movement threshold
+        /// </summary>
+        private float _threshold = 0.2f;
+
+
 
         // Update is called once per frame
         void Update()
@@ -36,8 +42,19 @@ namespace FarmingVR.Interactions
                         }
                     } else
                     {
-                        // If the finger is moving on the screen
-                        if (Input.GetTouch(0).deltaPosition.x != 0)
+                        // If the user hits a model 
+                        // Look for a plane hitting the raycast from the touch point
+                        TrackableHit hit;
+                        TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
+                            TrackableHitFlags.FeaturePointWithSurfaceNormal;
+
+                        if (Frame.Raycast(Input.GetTouch(0).position.x, Input.GetTouch(0).position.y, raycastFilter, out hit))
+                        {
+                            Debug.Log(hit);
+                        }
+                        // Fire event
+                        // If the finger is moving on the screen and a model is already selected
+                        if (Input.GetTouch(0).deltaPosition.x >= _threshold && Selector.CurrentlySelected != null)
                         {
                             // Rotate the model
                             new RotateModelEvent(Input.GetTouch(0).deltaPosition.x);

@@ -51,7 +51,7 @@ namespace FarmingVR.ScenePreparation
         {
             if (!SceneIsDisplayed)
             {
-                // Look for a plane hitting the raycast from the touch point (TrackableHit, TrackableHitFlags, Frame.Raycast
+                // Look for a plane hitting the raycast from the touch point
                 TrackableHit hit;
                 TrackableHitFlags raycastFilter = TrackableHitFlags.PlaneWithinPolygon |
                     TrackableHitFlags.FeaturePointWithSurfaceNormal;
@@ -90,10 +90,6 @@ namespace FarmingVR.ScenePreparation
 
             // Make the model a child of the anchor
             farmObject.transform.parent = anchor.transform;
-
-            // Add Components Rescaler and Rotator
-            farmObject.gameObject.AddComponent<ModelRescaler>();
-            farmObject.gameObject.AddComponent<ModelRotator>();
 
             // Create new event when new anchor and object are placed on the scene
             new ModelIsDisplayedEvent(farmObject);
