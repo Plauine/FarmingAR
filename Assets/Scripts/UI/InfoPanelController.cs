@@ -24,10 +24,10 @@ public class InfoPanelController : MonoBehaviour {
         {
             // Display its information
             _infoPanel.GetComponent<Text>().text =
-            "Model name             " + _modelName +
-            "   |  Model position   " + _modelPosition +
-            "\nModel scale          " + _modelScale +
-            "   |  Model rotation   " + _modelRotation
+            "Model name     " + _modelName +
+            "Model position " + _modelPosition +
+            "Model scale    " + _modelScale +
+            "Model rotation " + _modelRotation
             ;
         } else // If no model is selected
         {
@@ -35,7 +35,7 @@ public class InfoPanelController : MonoBehaviour {
         }
     }
     // Use this for initialization
-    void Start()
+    void Awake()
     {
         ModelSelectedEvent.RegisterListener(SaveSelectedModel);
         RotateModelEvent.RegisterListener(UpdateDisplayRotate);

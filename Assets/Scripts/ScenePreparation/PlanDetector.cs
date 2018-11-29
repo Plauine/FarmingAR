@@ -14,6 +14,10 @@ namespace FarmingVR.ScenePreparation
 	    // Update is called once per frame
 	    void Update () {
             Session.GetTrackables(m_AllPlanes);
+            if (m_AllPlanes.Count == 1) // When we find the first plane
+            {
+                new FoundAPlaneEvent();
+            }
         }
     }
 }

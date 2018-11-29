@@ -32,7 +32,7 @@ namespace FarmingVR.Interactions
             {
                 case 1:
                     // If the model is not yet displayed
-                    if (!ModelDisplayer.SceneIsDisplayed)
+                    if (!ModelDisplayer.AtLeastOneIsDisplayed)
                     {
                         // If it is the beginning of the touch phase
                         if (Input.GetTouch(0).phase == TouchPhase.Began)

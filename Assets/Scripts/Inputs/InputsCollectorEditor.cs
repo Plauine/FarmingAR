@@ -12,8 +12,8 @@ public class InputsCollectorEditor : MonoBehaviour {
             // If the user left-clicked 
             if (Input.GetMouseButtonDown(0))
             {
-                // If the model has not been displayed yet
-                if (!FarmingVR.ScenePreparation.ModelDisplayer.SceneIsDisplayed)
+                // If no model is yet displayed
+                if (!FarmingVR.ScenePreparation.ModelDisplayer.AtLeastOneIsDisplayed)
                 {
                     // Fire event to display the model
                     new DisplayModelEvent(Input.mousePosition);
@@ -21,7 +21,6 @@ public class InputsCollectorEditor : MonoBehaviour {
                 else // If the model has already been displayed
                 {
                     Selector.SelectModel(Input.mousePosition);
-
                 }
 
             }
@@ -32,8 +31,7 @@ public class InputsCollectorEditor : MonoBehaviour {
                 {
                     if (Input.GetAxis("Vertical") != 0)
                     {
-                        var scaleModifier = -Input.GetAxis("Vertical") * 0.8f;
-                        new RescaleModelEvent(scaleModifier);
+                        new RescaleModelEvent(Input.GetAxis("Vertical"));
                     }
                     if (Input.GetAxis("Horizontal") != 0)
                     {

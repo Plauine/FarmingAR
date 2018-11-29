@@ -23,7 +23,7 @@ namespace FarmingVR.ScenePreparation
         /// <summary>
         /// Boolean to true if the scene is displayed
         /// </summary>
-        public static bool SceneIsDisplayed;
+        public static bool AtLeastOneIsDisplayed;
 
         /// <summary>
         /// Constant value to make sure the scene will be facing the user when placed
@@ -49,7 +49,7 @@ namespace FarmingVR.ScenePreparation
         /// <param name="info"></param>
         private void PrepareModelDisplay(DisplayModelEvent info)
         {
-            if (!SceneIsDisplayed)
+            if (!AtLeastOneIsDisplayed)
             {
                 // Look for a plane hitting the raycast from the touch point
                 TrackableHit hit;
@@ -94,7 +94,7 @@ namespace FarmingVR.ScenePreparation
             // Create new event when new anchor and object are placed on the scene
             new ModelIsDisplayedEvent(farmObject);
 
-            SceneIsDisplayed = true;
+            AtLeastOneIsDisplayed = true;
         }
     }
 }

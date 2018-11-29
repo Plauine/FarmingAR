@@ -1,4 +1,5 @@
-﻿using FarmingVR.ScenePreparation;
+﻿using System;
+using FarmingVR.ScenePreparation;
 using UnityEngine;
 
 /// <summary>
@@ -11,13 +12,14 @@ namespace FarmingVR.UI
 
         [SerializeField] private GameObject _StatusBar;
 
-	    // Update is called once per frame
-	    void Update () {
+        private void Start()
+        {
+            FoundAPlaneEvent.RegisterListener(HideStatusBar);
+        }
 
-             // Set the display to true
-             var displayStatusBar = GetComponent<PlanDetector>().m_AllPlanes.Count == 0;
-
-            _StatusBar.SetActive(displayStatusBar);
+        private void HideStatusBar(FoundAPlaneEvent info)
+        {
+            _StatusBar.SetActive(false);
         }
     }
 }

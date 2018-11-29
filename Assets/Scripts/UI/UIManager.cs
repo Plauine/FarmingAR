@@ -18,26 +18,12 @@ public class UIManager : MonoBehaviour {
     private Animator _panelAnimator;
     private Animator _buttonAnimator;
 
-    private Text _textHolder;
-
-    private void Update()
-    {
-        if (_model != null)
-        {
-            // Get values of the model's rotation and scale
-            var textToDisplay = "Model's scale: " + _model.transform.localScale;
-            textToDisplay += "\nModel's rotation: " + _model.transform.rotation;
-
-            _textHolder.text = textToDisplay;
-        }
-    }
 
     private void Start()
     {
         ModelIsDisplayedEvent.RegisterListener(ShowButton);
         _panelAnimator = _infoPanel.GetComponent<Animator>();
         _buttonAnimator = _button.GetComponent<Animator>();
-        _textHolder = GameObject.Find("InfoDisplay").GetComponent<Text>();
     }
 
     private void OnDisable()

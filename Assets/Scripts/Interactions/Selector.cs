@@ -14,13 +14,13 @@ namespace FarmingVR.Interactions
     {
         public static Transform CurrentlySelected;
 
-        private static Camera _camera;
+        private static Camera _camera2;
 
-        [SerializeField] private Camera _cam2;
+        [SerializeField] private Camera _camera;
 
         private void Start()
         {
-            _camera = _cam2;
+            _camera2 = _camera;
         }
 
         /// <summary>
@@ -30,7 +30,7 @@ namespace FarmingVR.Interactions
         public static void SelectModel(Vector3 clickPosition)
         {
             // Check if the hit encountered a model
-            Ray ray = _camera.ScreenPointToRay(clickPosition);
+            Ray ray = _camera2.ScreenPointToRay(clickPosition);
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, Mathf.Infinity)) // If the user clicked on something
